@@ -1,6 +1,11 @@
 # Instagram contest users checker
 
-The script downloads random comic from [xkcd.com](https://xkcd.com/) and post it on the wall of [VK](https://vk.com/) group
+The script checkspartisipans of Instagram contests following standart rules:
+* tagged a friend(s)
+* liked a upload_to_instagram
+* subascribed to orginizer account
+
+downloads random comic from [xkcd.com](https://xkcd.com/) and post it on the wall of [VK](https://vk.com/) group
 
 
 ### How to install
