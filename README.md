@@ -1,4 +1,4 @@
-# Instagram contest users checker
+# Instagram contests users checker
 
 The script checks participants of Instagram contests following standart rules and prints approved users list for picking a winner.
 
