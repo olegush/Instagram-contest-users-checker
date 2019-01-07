@@ -5,7 +5,7 @@ The script checkspartisipans of Instagram contests following standart rules:
 * liked a upload_to_instagram
 * subascribed to orginizer account
 
-downloads random comic from [xkcd.com](https://xkcd.com/) and post it on the wall of [VK](https://vk.com/) group
+Based on library [Instabot](https://github.com/instagrambot/)
 
 
 ### How to install
@@ -15,25 +15,19 @@ Then use `pip` (or `pip3`, if there is a conflict with Python2) to install depen
 ```
 pip install -r requirements.txt
 ```
-You should:
-- create VK group [https://vk.com/groups?w=groups_create](https://vk.com/groups?w=groups_create)
-- create standalone VK application [https://vk.com/editapp?act=create](https://vk.com/editapp?act=create)
-- get client_id of the application
-- get access_token with 'photos', 'wall' and 'offline' permissions [https://vk.com/dev/access_token](https://vk.com/dev/access_token)
-
-
-.env file with enviroment variables should contain your CLIENT_ID and TOKEN
+.env file with enviroment variables should contain your Instagram login a nd password
 ```
-CLIENT_ID=client_id
-TOKEN=token
+LOGIN=your_login
+PASSWORD=your_password
 ```
 
 
 ### Quickstart
 
-Just run **main.py**
+Run **main.py** with two arguments: username of contest's orginizer and url to Instagram post
+
 ```bash
-$ python salary.py
+$ python main.py
 1. Got random comic ID:1630
 
 2. Data from XKCD for comic "quadcopter.png" was fetched
