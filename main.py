@@ -15,38 +15,34 @@ def get_args():
     return args
 
 
-def get_users_who_tagged(bot, comments, likers):
+def get_users_who_tagged(bot, comments, likers, max_delay = 30):
     users = []
-    # script will choose random number from 0 to max_delay seconds
-    max_delay = 30
-    for num, comment in enumerate(comments):
-        user_id = comment['user_id']
-        username = comment['user']['username']
+    for comment in comments:
+        user = (comment['user_id'], comment['user']['username'])
         # filtering already added users
-        if (user_id, username) not in users:
+        if user not in users:
             friends_list = get_friends_list(comment['text'])
             # filtering users who tag nobody and checking friend list
-            if friends_list and check_user_friends(friends_list, user_id):
-                users.append((user_id, username))
+            if friends_list and check_user_friends(friends_list, user[0]):
+                users.append(user)
                 # delay in the most critical place
                 time.sleep(int(random()*max_delay))
     return list(set(users))
 
 
 def get_friends_list(comment):
-    usernames_list = re.findall('(@[A-Za-z0-9_.]*)', comment)
-    ids = map(lambda x: bot.get_user_id_from_username(x[1:]), usernames_list)
-    return list(ids)
+    reg_expression = '@([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\\.(?!\\.))){0,28}(?:[A-Za-z0-9_]))?)'
+    return re.findall(reg_expression, comment)
 
 
 def check_user_friends(friends_list, user_id):
-    for friend_user_id in friends_list:
+    for friend_user_name in friends_list:
         # checking if friend exists
-        if bool(friend_user_id):
+        friend_user_id = bot.get_user_id_from_username(friend_user_name)
+        if friend_user_id:
             user_followers = bot.get_user_followers(user_id)
             # checking if friend really followed the user
-            if friend_user_id in user_followers:
-                return True
+            return str(friend_user_id) in user_followers
 
 
 def get_users_who_liked(users, likers):
@@ -56,8 +52,7 @@ def get_users_who_liked(users, likers):
     return users
 
 
-def get_users_subscribed(bot, users, account_id):
-    max_delay = 15
+def get_users_subscribed(bot, users, account_id, max_delay = 15):
     for user in users:
         user_following = bot.get_user_following(user[0])
         # delay in the most critical places
@@ -81,7 +76,7 @@ if __name__ == '__main__':
     account_id = bot.get_user_id_from_username(account)
     media_id = bot.get_media_id_from_link(url_contest)
     # for testing use bot.get_media_comments(media_id) (first 20 comments)
-    comments = bot.get_media_comments_all(media_id)
+    comments = bot.get_media_comments(media_id)
     likers = bot.get_media_likers(media_id)
 
     users_who_tagged = get_users_who_tagged(bot, comments, likers)
